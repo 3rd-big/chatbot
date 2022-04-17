@@ -1,7 +1,5 @@
 package com.hecto.chatbot.domain;
 
-import com.hecto.chatbot.repository.ReadFile;
-
 import java.util.Objects;
 
 public class Member {
@@ -19,11 +17,15 @@ public class Member {
         return new Member(id, password);
     }
 
-    public boolean duplicationCheck(String id) {
-        ReadFile file = new ReadFile();
-        file.ReadTextFile();
-        file.saveData();
+    public String getPassword() {
+        return password;
+    }
 
+    public String getId() {
+        return id;
+    }
+
+    public boolean duplicationCheck(String id) {
         if (this.id.equals(id)) return false;
         return true;
     }

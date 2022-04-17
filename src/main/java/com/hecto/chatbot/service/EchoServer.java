@@ -2,6 +2,8 @@ package com.hecto.chatbot.service;
 
 
 import com.hecto.chatbot.domain.Member;
+import com.hecto.chatbot.repository.MemberReadFile;
+import com.hecto.chatbot.repository.MemberWriteFile;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -12,8 +14,15 @@ import java.util.List;
 
 public class EchoServer {
     List<Member> memberList = new ArrayList<>();
+    Member member;
+    PrintWriter pw;
+    BufferedReader br;
+
 
     public final void ReadyCommunication() throws IOException {
+
+        LoadingLoginFile();
+
         ServerSocket serverSocket = new ServerSocket(9000);
 
         // accept() 호출 시  대기하고 있다가
@@ -30,30 +39,48 @@ public class EchoServer {
         // 전송 스트림
         OutputStream out = conSocket.getOutputStream();
         OutputStreamWriter outW = new OutputStreamWriter(out);
-        PrintWriter pw = new PrintWriter(outW);
+        pw = new PrintWriter(outW);
 
         // 수신 스트림
         InputStream in = conSocket.getInputStream();
         InputStreamReader inR = new InputStreamReader(in);
-        BufferedReader br = new BufferedReader(inR);
+        br = new BufferedReader(inR);
 
+        pw.println("로그인은1번, 회원가입은 2번");
+        pw.flush();
         String str = br.readLine();
-        if (memberCheck(str) == true) {
-            pw.println("아이디를 입력해주세요.");
-            pw.flush();
-            String id = br.readLine();
-            pw.println("비밀번호를 입력해주세요.");
-            pw.flush();
-            String password = br.readLine();
-            login(id, password);
-        }
-        if (memberCheck(str) == false) {
-            pw.println("회원가입할 아이디를 입력");
-            pw.flush();
-            String id = br.readLine();
-            pw.println("비밀번호 입력");
-            String password = br.readLine();
-            join(id,password);
+        while (true) {
+            String id;
+            if (SelectLoginOrJoin(str).equals("1")) {
+                String password;
+                do {
+                    pw.println("아이디를 입력해주세요.");
+                    pw.flush();
+                    id = br.readLine();
+                    pw.println("비밀번호를 입력해주세요.");
+                    pw.flush();
+                    password = br.readLine();
+
+                } while (!login(id, password));
+                break;
+            }
+            if (SelectLoginOrJoin(str).equals("2")) {
+                while (true) {
+                    pw.println("회원가입할 아이디를 입력");
+                    pw.flush();
+                    id = br.readLine();
+                    if (idCheck(id)) break;
+                }
+                pw.println("비밀번호 입력");
+                pw.flush();
+                String password = br.readLine();
+                memberList.add(Member.of(id, password));
+                member = memberList.get(memberList.size() - 1);
+                pw.println("회원가입완료");
+                pw.flush();
+                MemberWriteFile.memberAddFile(member);
+                break;
+            }
         }
 
         // 송수신
@@ -78,30 +105,53 @@ public class EchoServer {
 
     }
 
-    private final void join(String id, String password) {
-        duplicationCheck(id);
-    }
+    private String SelectLoginOrJoin(String str) throws IOException {
+        while (true) {
+            if (str.equals("1") || str.equals("2")) return str;
+            pw.println("로그인은1번, 회원가입은 2번");
+            pw.flush();
+            str = br.readLine();
 
-
-    private final boolean memberCheck(String str) {
-
-        if (str.equals("1")) {
-            return true;
         }
-        if (str.equals("2")) {
-            return false;
+    }
+
+    private void LoadingLoginFile() {
+        MemberReadFile file = new MemberReadFile();
+        file.ReadTextFile();
+        memberList = file.saveData();
+    }
+
+    private boolean idCheck(String id) {
+        for (Member member : memberList
+        ) {
+            if (!member.duplicationCheck(id)) {
+                pw.append(id + " 는 이미 존재하는 ID 입니다.  ");
+                return false;
+            }
         }
-
+        pw.append(id + " 는 사용 가능한 ID 입니다.  ");
+        return true;
     }
 
-    private final Member login(String id, String password) {
 
+    private Boolean login(String id, String password) {
+        for (Member member : memberList
+        ) {
+            if (member.getId().equals(id)) {
+                if (member.getPassword().equals(password)) {
+                    this.member = member;
+                    pw.println(id + " 로그인 성공");
+                    pw.flush();
+                    return true;
+                }
+                pw.append("비밀번호 잘못 입력 ");
+
+                return false;
+            }
+        }
+        pw.append("존재하지 않는 아이디 입니다. ");
+        pw.flush();
+        return false;
     }
 
-    private final void joinMember() {
-
-    }
-    private final void loadMembersId(){
-        memberList
-    }
 }

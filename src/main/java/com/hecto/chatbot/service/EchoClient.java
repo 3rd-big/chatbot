@@ -21,17 +21,18 @@ public class EchoClient {
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader br = new BufferedReader(isr);
 
-        while(true) {
-            System.out.println("서버에 전송할 메세지 입력(quit입력시 종료) : ");
+        String str = "";
+        while (true) {
+            System.out.println(br.readLine());
+            //System.out.println("서버에 전송할 메세지 입력(quit입력시 종료) : ");
             String line = keyboard.readLine();
-            if(line.equals("quit")) {
+            if (line.equals("quit")) {
                 System.out.println("서버와의 연결을 종료 합니다.");
                 clientSocket.close();
                 break;
             }
             pw.println(line);
             pw.flush();
-            System.out.println(br.readLine());
         }
     }
 }

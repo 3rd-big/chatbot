@@ -1,13 +1,14 @@
 package com.hecto.chatbot;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+import com.hecto.chatbot.service.EchoServer;
+
+import java.io.IOException;
+
 public class ChatbotApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ChatbotApplication.class, args);
+	public static void main(String[] args) throws IOException {
+		EchoServer echoServer = new EchoServer();
+		echoServer.ReadyCommunication();
 	}
-
 }

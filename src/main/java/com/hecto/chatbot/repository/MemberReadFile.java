@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ReadFile {
+public class MemberReadFile {
     List<String> textInfo = new ArrayList<>();
+    static final String FILE_PATH_NAME = "member";
 
     public final void ReadTextFile() {
-        File txtFile = new File("member.txt");
+        File txtFile = new File(FILE_PATH_NAME);
         String line = "";
 
         try (BufferedReader br = new BufferedReader(new FileReader(txtFile))) {
