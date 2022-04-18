@@ -6,15 +6,25 @@ public class Member {
     private String id;
     private String password;
     private String name;
-    private int mobileNumber;
+    private String mobileNumber;
 
-    private Member(String id, String password) {
+    public Member(String id, String password, String name, String mobileNumber) {
         this.id = id;
         this.password = password;
+        this.name = name;
+        this.mobileNumber = mobileNumber;
     }
 
-    public static Member of(String id, String password) {
-        return new Member(id, password);
+    public static Member joinMember(String id, String password, String name, String mobileNumber) {
+        return new Member(id, password, name, mobileNumber);
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getPassword() {

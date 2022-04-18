@@ -48,10 +48,10 @@ public class EchoServer {
 
         pw.println("로그인은1번, 회원가입은 2번");
         pw.flush();
-        String str = br.readLine();
+        String str = SelectLoginOrJoin(br.readLine());
         while (true) {
             String id;
-            if (SelectLoginOrJoin(str).equals("1")) {
+            if (str.equals("1")) {
                 String password;
                 do {
                     pw.println("아이디를 입력해주세요.");
@@ -64,7 +64,7 @@ public class EchoServer {
                 } while (!login(id, password));
                 break;
             }
-            if (SelectLoginOrJoin(str).equals("2")) {
+            if (str.equals("2")) {
                 while (true) {
                     pw.println("회원가입할 아이디를 입력");
                     pw.flush();
@@ -74,7 +74,13 @@ public class EchoServer {
                 pw.println("비밀번호 입력");
                 pw.flush();
                 String password = br.readLine();
-                memberList.add(Member.of(id, password));
+                pw.println("이름 입력");
+                pw.flush();
+                String name = br.readLine();
+                pw.println("전화번호 입력");
+                pw.flush();
+                String mobileNumber = br.readLine();
+                memberList.add(Member.joinMember(id, password, name, mobileNumber));
                 member = memberList.get(memberList.size() - 1);
                 pw.println("회원가입완료");
                 pw.flush();
@@ -82,6 +88,8 @@ public class EchoServer {
                 break;
             }
         }
+
+        // 윤범님 소스 추가
 
         // 송수신
         while (true) {

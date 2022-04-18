@@ -15,7 +15,7 @@ public class MemberWriteFile {
             BufferedWriter bw = new BufferedWriter(fw);
 
             bw.newLine();
-            bw.write(member.getId() + " " + member.getPassword());
+            bw.write(member.getId() + " " + member.getPassword() + " " + member.getName() + " " + member.getMobileNumber());
             bw.flush();
             bw.close();
             System.out.println(member.getId() + " 파일 저장 완료");
