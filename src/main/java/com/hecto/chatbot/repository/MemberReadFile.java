@@ -33,6 +33,8 @@ public class MemberReadFile {
         String line = "";
         String id;
         String pw;
+        String name;
+        String mobilNumber;
         String[] var;
 
         Iterator iterator = textInfo.iterator();
@@ -42,7 +44,9 @@ public class MemberReadFile {
             var = line.split(" ");
             id = var[0];
             pw = var[1];
-            memberList.add(Member.of(id, pw));
+            name = var[2];
+            mobilNumber = var[3];
+            memberList.add(Member.joinMember(id, pw, name, mobilNumber));
         }
         return memberList;
     }
