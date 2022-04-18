@@ -1,29 +1,17 @@
 package com.hecto.chatbot.domain;
 
-import java.util.Date;
-
 public class ReservationInfo {
 
     String store;
-
-    String name;
-
-    String mobileNumber;
-
-    Date reservationDate;
-
+    String reservationDate;
     int numberPeople;
 
-    public ReservationInfo() {
-    }
-
-    public ReservationInfo(String store, String name, String mobileNumber, Date reservationDate, int numberPeople) {
-        this.store = store;
-        this.name = name;
-        this.mobileNumber = mobileNumber;
-        this.reservationDate = reservationDate;
-        this.numberPeople = numberPeople;
-    }
+	public ReservationInfo(String store, String reservationDate, int numberPeople) {
+			super();
+			this.store = store;
+			this.reservationDate = reservationDate;
+			this.numberPeople = numberPeople;
+		}
 
     public String getStore() {
         return store;
@@ -33,27 +21,11 @@ public class ReservationInfo {
         this.store = store;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
-
-    public Date getReservationDate() {
+    public String getReservationDate() {
         return reservationDate;
     }
 
-    public void setReservationDate(Date reservationDate) {
+    public void setReservationDate(String reservationDate) {
         this.reservationDate = reservationDate;
     }
 
@@ -64,4 +36,12 @@ public class ReservationInfo {
     public void setNumberPeople(int numberPeople) {
         this.numberPeople = numberPeople;
     }
+
+	@Override
+	public String toString() {
+		return "ReservationInfo [store=" + store + ", reservationDate=" + reservationDate + ", numberPeople="
+				+ numberPeople + "]";
+	}
+    
+    
 }
